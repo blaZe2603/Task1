@@ -8,7 +8,7 @@ public class parallax : MonoBehaviour
     [SerializeField] bool scrollleft;
 
     float singletexture;
-
+    float scale = 21;
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class parallax : MonoBehaviour
 
     void check()
     {
-        if((Mathf.Abs(transform.position.x) - singletexture > 0)){
+        if((Mathf.Abs(transform.position.x) - singletexture*scale > 0)){
             transform.position = new Vector3(0f, transform.position.y, transform.position.z); 
         }
     }
