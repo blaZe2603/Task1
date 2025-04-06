@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class portals : MonoBehaviour
+public class portal_p : MonoBehaviour
 {
     public Transform tp2;
     //public Transform own;
@@ -18,8 +18,8 @@ public class portals : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player.existp)
-            tp2  = player.currentPortalp.transform;
+        if(player.existg)
+            tp2  = player.currentPortalg.transform;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

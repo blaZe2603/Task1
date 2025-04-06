@@ -22,7 +22,7 @@ public class Bandit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P) && player_near)
+        if(Input.GetKeyDown(KeyCode.T) && player_near)
         {
             if(dialgoue_box.activeInHierarchy)
             {
