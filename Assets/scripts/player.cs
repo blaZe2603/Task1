@@ -12,7 +12,7 @@ public class player : MonoBehaviour
     public Transform portal_distance;
     public Animator animator;
     public Rigidbody2D rb;
-    public BoxCollider2D collider2D;
+    public BoxCollider2D col;
     public float movespeed;
     float horizontal;
     public float jumpspeed;
@@ -21,15 +21,17 @@ public class player : MonoBehaviour
     public GameObject portal_g;
     public GameObject currentPortalp;
     public GameObject currentPortalg;
+    public GameObject bow;
     public float dis;
     public bool existp;
     public bool existg;
-
     public float player_health;
+
+    public bool player_dead = false;
     // Start is called before the first frame update
     void Start()
     {
-        collider2D =   gameObject.GetComponent<BoxCollider2D>();   
+        col = gameObject.GetComponent<BoxCollider2D>();   
         player_health = 100f;
     }
 
@@ -38,8 +40,14 @@ public class player : MonoBehaviour
     {
         if(player_health <= 0)
         {
+            player_dead = true;
             animator.SetBool("dead",true);
             StartCoroutine(dead());
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            bool newState = !bow.activeSelf;
+            bow.SetActive(newState);
         }
         animator.SetFloat("speed", Mathf.Abs(horizontal)) ;
         animator.SetFloat("jump", Mathf.Abs(rb.velocity.y));
@@ -72,20 +80,17 @@ public class player : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Alpha2))
     {
         existg = true;
-        // Destroy existing portal if it exists
         if (currentPortalg != null)
         {
             Destroy(currentPortalg);
         }
 
-        // Spawn new portal at a position in front of the player
         Vector3 spawnPos = portal_distance.position;  
-                           
-
         currentPortalg = Instantiate(portal_g, spawnPos, Quaternion.identity);
         Debug.Log("works");
     }
     }
+    
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed && is_grounded())

@@ -27,8 +27,9 @@ public class Heath_Manager : MonoBehaviour
         {
             damage(20);
         }
-        if(Input.GetKeyDown(KeyCode.H) )
+        if(Input.GetKeyDown(KeyCode.H) && !player_script.player_dead)
         {
+            player_script.animator.Play("special_ability");
             heal(5);
         }
     }
