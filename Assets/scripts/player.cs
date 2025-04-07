@@ -27,6 +27,7 @@ public class player : MonoBehaviour
     public bool existg;
     public float player_health;
 
+    public bool bow_state = true;
     public bool player_dead = false;
     // Start is called before the first frame update
     void Start()
@@ -35,23 +36,27 @@ public class player : MonoBehaviour
         player_health = 100f;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //death animation
         if(player_health <= 0)
         {
             player_dead = true;
             animator.SetBool("dead",true);
             StartCoroutine(dead());
         }
+        //bow activate deactivate
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            bow_state = !bow_state;
             bool newState = !bow.activeSelf;
             bow.SetActive(newState);
         }
+        //animation
         animator.SetFloat("speed", Mathf.Abs(horizontal)) ;
         animator.SetFloat("jump", Mathf.Abs(rb.velocity.y));
         rb.velocity = new Vector2(horizontal * movespeed, rb.velocity.y);
+        //direction of player
         if (!rightfac && horizontal > 0)
         {
             Flip();
@@ -61,34 +66,35 @@ public class player : MonoBehaviour
            Flip();
  
         }
-    if (Input.GetKeyDown(KeyCode.Alpha1))
-    {
-        existp = true;
-
-        // Destroy existing portal if it exists
-        if (currentPortalp != null)
+        
+        //portal creation
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Destroy(currentPortalp);
+            existp = true;
+
+            if (currentPortalp != null)
+            {
+                Destroy(currentPortalp);
+            }
+
+            Vector3 spawnPos = portal_distance.position;
+                            
+
+            currentPortalp = Instantiate(portal_p, spawnPos, Quaternion.identity);
         }
 
-        // Spawn new portal at a position in front of the player
-        Vector3 spawnPos = portal_distance.position;
-                           
-
-        currentPortalp = Instantiate(portal_p, spawnPos, Quaternion.identity);
-    }
-    if (Input.GetKeyDown(KeyCode.Alpha2))
-    {
-        existg = true;
-        if (currentPortalg != null)
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Destroy(currentPortalg);
-        }
+            existg = true;
+            if (currentPortalg != null)
+            {
+                Destroy(currentPortalg);
+            }
 
-        Vector3 spawnPos = portal_distance.position;  
-        currentPortalg = Instantiate(portal_g, spawnPos, Quaternion.identity);
-        Debug.Log("works");
-    }
+            Vector3 spawnPos = portal_distance.position;  
+            currentPortalg = Instantiate(portal_g, spawnPos, Quaternion.identity);
+            Debug.Log("works");
+        }
     }
     
     public void Jump(InputAction.CallbackContext context)
